@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Accueil</title>
+  </head>
+  <body>
+    <h1>Etudiant</h1>
+
+      <div class="container">
+        <table>
+          <th>Nom d'équipe</th>
+          <th>Projet</th>
+
+      {% for equipe in equipes%}
+      <tr>
+        <td>{{ equipe.Nom}}</td>
+        <td>{{ equipe.Projet.Nom}}</td>
+        <td> <a href="{% url 'equipe' equipe.id %}">Voir</a></td>
+      </tr>
+
+      {% empty %}
+        <tr>
+          <td>
+          Aucune equipe
+          </td>
+        </tr>
+      {% endfor %}
+        </table>
+    </div>
+  </body>
+</html>

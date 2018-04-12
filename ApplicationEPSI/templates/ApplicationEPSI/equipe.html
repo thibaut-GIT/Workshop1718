@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>EQUIPE : {{ equipe.Nom}}</title>
+  </head>
+  <body>
+    <h1>Equipe {{ equipe.Nom}}</h1>
+    <div class="container">
+      <h2>Autres membres</h2>
+      <table>
+        <th>Nom</th>
+        <th>Mail</th>
+        {% for membre in equipe.Etudiants.all %}
+        <tr>
+          <td>{{ membre.Nom}}</td>
+          <td>{{ membre.Mail}}</td>
+        </tr>
+
+        {% empty %}
+          <tr>
+            <td>
+            Aucun autre membre dans l'equipe
+            </td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <span>Credit restant : </span>
+    <a href="#">Envoyer un message</a>
+  </body>
+</html>
