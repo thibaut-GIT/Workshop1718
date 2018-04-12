@@ -8,19 +8,51 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db import models
-from ApplicationEPSI.models import Etudiant, Equipe
+from ApplicationEPSI.models import Etudiant, Equipe, Soutien, Message, Intervenant, Projet
 
 
 # Create your views here.
 
 @login_required
-def homepageetudiant(request):
-    return render(request,'ApplicationEPSI/homepageetudiant.html')
+def homepageetudiant(request, idetudiant):
+    etudiant = get_object_or_404(Etudiant, id = idetudiant)
+    equipes = etudiant.equipe_set.all()
+    return render(request,'ApplicationEPSI/homepageetudiant.html',{'equipes' : equipes, 'etudiant' : etudiant })
 
 @login_required
-def equipe(request, id):
+def equipe(request, idetudiant, idequipe ):
+    equipe = get_object_or_404(Equipe, id = idequipe)
+    etudiant = get_object_or_404(Equipe, id = idetudiant)
+    return render(request, 'ApplicationEPSI/equipe.html', {'equipe' : equipe, 'etudiant' : etudiant})
+
+@login_required
+def projet(request, id):
+    projet = get_object_or_404(Projet, id = id)
+    equipes = projet.equipe_set.all()
+    return render(request, 'ApplicationEPSI/projet.html', {'projet' : projet , 'equipes' : equipes} )
+
+@login_required
+def message(request, idetudiant, idequipe):
+    equipe = get_object_or_404(Equipe, id = idequipe)
+    etudiant = get_object_or_404(Etudiant, id = idetudiant)
+    return render(request, 'ApplicationEPSI/message.html', {'equipe' : equipe, 'etudiant' : etudiant})
+
+@login_required
+def ZoomEquipe(request, id):
     equipe = get_object_or_404(Equipe, id = id)
-    return render(request, 'ApplicationEPSI/equipe.html', {'equipe' : equipe})
+    Messages =  Messages.objects.get()
+    return render(request, 'ApplicationEPSI/ZoomEquipe.html', {'equipe' : equipe})
+
+@login_required
+def messagesent(request, id):
+    equipe = get_object_or_404(Equipe, id = id)
+    if request.method == 'POST':
+        Titre = request.POST['titre']
+        Contenu = request.POST['contenu']
+        Messagetosent = Message(Equipe=equipe, Intervenant=equipe.Projet.Intervenant, Titre=Titre, Contenu=Contenu)
+        Messagetosent.save()
+    return render(request, 'ApplicationEPSI/messagesent.html', {'equipe' : equipe})
+
 
 @login_required
 def homepageintervant(request):
@@ -57,9 +89,12 @@ def loginView(request):
                     usern = user.username
                     etudiant = Etudiant.objects.get(Mail=usern)
                     equipe = etudiant.equipe_set.all()
-                    return render( request, 'ApplicationEPSI/homepageetudiant.html', {'equipes' : equipe}, {'etudiant' : etudiant})
+                    return redirect( '/homepageetudiant/' + str(etudiant.id) )
                 elif user.groups.filter (name='Intervenant'):
-                    return redirect('/homepageintervant/')
+                    usern = user.username
+                    intervenant = Intervenant.objects.get(Mail=usern)
+                    projets = intervenant.projet_set.all()
+                    return render( request, 'ApplicationEPSI/homepageintervenant.html', {'projets' : projets}, {'intervenant' : intervenant})
                 elif user.groups.filter (name='Responsable'):
                     return redirect('/admin/')
                 elif user.groups.filter (name='Administrateur'):

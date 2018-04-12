@@ -14,6 +14,7 @@ class Intervenant(models.Model):
 class Projet(models.Model):
     Nom = models.CharField(max_length=100)
     Intervenant = models.ForeignKey('Intervenant',on_delete=models.CASCADE, null=True)
+    TempsSoutienRestant = models.CharField(max_length=100, null=True)
 
 
     def __str__(self):
@@ -21,7 +22,6 @@ class Projet(models.Model):
 
 class Soutien(models.Model):
     Minutes = models.CharField(max_length=100)
-    Projet = models.ForeignKey('Projet',on_delete=models.CASCADE, null=True)
     Equipe = models.ForeignKey('Equipe',on_delete=models.CASCADE, null=True)
     Intervenant = models.ForeignKey('Intervenant',on_delete=models.CASCADE, null=True)
 

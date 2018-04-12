@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Equipe,Etudiant, Intervenant, Projet, Soutien
+from .models import Equipe,Etudiant, Intervenant, Projet, Message, Soutien
 # Register your models here.
 class EtudiantAdmin(admin.ModelAdmin):
     list_display   = ('Nom', 'Prenom', 'Mail' )
@@ -25,8 +25,10 @@ class ProjetAdmin(admin.ModelAdmin):
 class EquipeAdmin(admin.ModelAdmin):
     list_display   = ('Nom', 'Projet')
 
+
 admin.site.register(Projet, ProjetAdmin)
 admin.site.register(Soutien)
+admin.site.register(Message)
 admin.site.register(Intervenant, IntervenantAdmin)
 admin.site.register(Equipe, EquipeAdmin)
 admin.site.register(Etudiant, EtudiantAdmin)

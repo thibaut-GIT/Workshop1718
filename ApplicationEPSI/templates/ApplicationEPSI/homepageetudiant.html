@@ -11,12 +11,12 @@
         <table>
           <th>Nom d'équipe</th>
           <th>Projet</th>
-
+          <th>Voir</th>
       {% for equipe in equipes%}
       <tr>
         <td>{{ equipe.Nom}}</td>
         <td>{{ equipe.Projet.Nom}}</td>
-        <td> <a href="{% url 'equipe' equipe.id %}">Voir</a></td>
+        <td> <a href="{% url 'equipe' etudiant.id equipe.id%}">Voir</a></td>
       </tr>
 
       {% empty %}

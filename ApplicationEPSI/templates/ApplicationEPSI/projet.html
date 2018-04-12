@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Projet {{projet.Nom}}</title>
+  </head>
+  <body>
+    <h2>Equipes de {{projet.Nom}}</h2>
+    <h3>Temps restant : {{ projet.TempsSoutienRestant}} mn</h3>
+    <table>
+      <th>Nom</th>
+      <th>Mail</th>
+      {% for equipe in equipes %}
+      <tr>
+        <td>{{ equipe.Nom}}</td>
+        <td> <a href="{% url 'ZoomEquipe' equipe.id %}">Voir</a> </td>
+
+      </tr>
+
+      {% empty %}
+        <tr>
+          <td>
+
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

@@ -26,7 +26,8 @@
         {% endfor %}
       </table>
     </div>
-    <span>Credit restant : </span>
-    <a href="#">Envoyer un message</a>
+    <span>Credit restant pour le projet : {{ equipe.Projet.TempsSoutienRestant}}</span>
+
+    <a href="{% url 'message' etudiant.id equipe.id %}">Envoyer un message</a>
   </body>
 </html>

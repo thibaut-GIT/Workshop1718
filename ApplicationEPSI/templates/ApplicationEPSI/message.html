@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Message</title>
+  </head>
+  <body>
+    <h1>Message à {{ equipe.Projet.Intervenant.Nom }} {{ equipe.Projet.Intervenant.Prenom }}</h1>
+    <form class="" action="{% url 'messagesent' equipe.id %}" method="post">
+      <input type="text" name="titre" value="">
+
+      <textarea name="contenu" value=""></textarea>
+
+      <input type="submit" name="submit" value="Envoyer">
+      {% csrf_token %}
+    </form>
+  </body>
+</html>
