@@ -193,6 +193,7 @@ color: white;
       <span>Credits restants pour le projet : {{ equipe.Projet.TempsSoutienRestant}} mn</span>
 
       <h3>Membres</h3>
+    </div>
       <table class="table-fill">
         <thead>
 
@@ -220,5 +221,7 @@ color: white;
     </div>
 
     <a class="btn message" href="{% url 'message' etudiant.id equipe.id %}">Envoyer un message</a>
+    <a class="btn message" href="{% url 'homepageetudiant' etudiant.id  %}">Liste des équipes</a>
+
   </body>
 </html>
