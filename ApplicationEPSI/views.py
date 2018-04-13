@@ -26,10 +26,11 @@ def equipe(request, idetudiant, idequipe ):
     return render(request, 'ApplicationEPSI/equipe.html', {'equipe' : equipe, 'etudiant' : etudiant})
 
 @login_required
-def projet(request, id):
-    projet = get_object_or_404(Projet, id = id)
+def projet(request, idintervenant, idprojet ):
+    projet = get_object_or_404(Projet, id = idprojet)
     equipes = projet.equipe_set.all()
-    return render(request, 'ApplicationEPSI/projet.html', {'projet' : projet , 'equipes' : equipes} )
+    intervenant = get_object_or_404(Intervenant, id = idintervenant)
+    return render(request, 'ApplicationEPSI/projet.html', {'projet' : projet , 'equipes' : equipes, 'intervenant' : intervenant} )
 
 @login_required
 def message(request, idetudiant, idequipe):
@@ -38,25 +39,30 @@ def message(request, idetudiant, idequipe):
     return render(request, 'ApplicationEPSI/message.html', {'equipe' : equipe, 'etudiant' : etudiant})
 
 @login_required
-def ZoomEquipe(request, id):
-    equipe = get_object_or_404(Equipe, id = id)
-    Messages =  Messages.objects.get()
-    return render(request, 'ApplicationEPSI/ZoomEquipe.html', {'equipe' : equipe})
+def ZoomEquipe(request, idintervenant, idprojet, idequipe):
+    intervenant = get_object_or_404(Intervenant, id = idintervenant)
+    projet = get_object_or_404(Projet , id = idprojet)
+    equipe = get_object_or_404(Equipe, id = idequipe)
+
+    return render(request, 'ApplicationEPSI/ZoomEquipe.html', {'equipe' : equipe, 'intervenant' : intervenant, 'projet' : projet})
 
 @login_required
-def messagesent(request, id):
-    equipe = get_object_or_404(Equipe, id = id)
+def messagesent(request, idetudiant, idequipe):
+    equipe = get_object_or_404(Equipe, id = idequipe)
+    etudiant = get_object_or_404(Etudiant, id = idetudiant)
     if request.method == 'POST':
         Titre = request.POST['titre']
         Contenu = request.POST['contenu']
         Messagetosent = Message(Equipe=equipe, Intervenant=equipe.Projet.Intervenant, Titre=Titre, Contenu=Contenu)
         Messagetosent.save()
-    return render(request, 'ApplicationEPSI/messagesent.html', {'equipe' : equipe})
+    return render(request, 'ApplicationEPSI/messagesent.html', {'equipe' : equipe, 'etudiant' : etudiant})
 
 
 @login_required
-def homepageintervant(request):
-    return render(request,'ApplicationEPSI/homepageintervenant.html')
+def homepageintervenant(request, idintervenant):
+    intervenant = get_object_or_404(Intervenant, id = idintervenant)
+    projets = intervenant.projet_set.all()
+    return render(request,'ApplicationEPSI/homepageintervenant.html', {'projets' : projets, 'intervenant' : intervenant})
 
 def invalid(request):
     return render(request,'ApplicationEPSI/invalid.html')
@@ -88,13 +94,11 @@ def loginView(request):
                 if user.groups.filter (name='Etudiant'):
                     usern = user.username
                     etudiant = Etudiant.objects.get(Mail=usern)
-                    equipe = etudiant.equipe_set.all()
                     return redirect( '/homepageetudiant/' + str(etudiant.id) )
                 elif user.groups.filter (name='Intervenant'):
                     usern = user.username
                     intervenant = Intervenant.objects.get(Mail=usern)
-                    projets = intervenant.projet_set.all()
-                    return render( request, 'ApplicationEPSI/homepageintervenant.html', {'projets' : projets}, {'intervenant' : intervenant})
+                    return redirect('/homepageintervenant/' + str(intervenant.id) )
                 elif user.groups.filter (name='Responsable'):
                     return redirect('/admin/')
                 elif user.groups.filter (name='Administrateur'):

@@ -15,7 +15,7 @@
       {% for projet in projets%}
       <tr>
         <td>{{ projet.Nom}}</td>
-        <td> <a href="{% url 'projet' projet.id %}">Voir</a></td>
+        <td> <a href="{% url 'projet' intervenant.id projet.id %}">Voir</a></td>
       </tr>
 
       {% empty %}

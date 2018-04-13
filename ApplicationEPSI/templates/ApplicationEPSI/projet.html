@@ -13,7 +13,7 @@
       {% for equipe in equipes %}
       <tr>
         <td>{{ equipe.Nom}}</td>
-        <td> <a href="{% url 'ZoomEquipe' equipe.id %}">Voir</a> </td>
+        <td> <a href="{% url 'ZoomEquipe' intervenant.id projet.id equipe.id %}">Voir</a> </td>
 
       </tr>
 
